@@ -1,15 +1,25 @@
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+  };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs = inputs:
+    inputs.flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
-        roc = pkgs.stdenv.mkDerivation {
+        nixpkgs = import inputs.nixpkgs {
+          system = system;
+          overlays = [ inputs.devshell.overlay ];
+        };
+        roc = nixpkgs.stdenv.mkDerivation {
           name = "roc";
           sourceRoot = ".";
-          src = pkgs.fetchurl {
+          src = nixpkgs.fetchurl {
             url = "https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-2022-11-30-1e47de3.tar.gz";
             sha256 = "sha256-PCEmeIQaPnTU76YRplvJzQEV+7aCF/l4ObXmdmp2cNk=";
           };
@@ -21,11 +31,11 @@
         };
       in
       {
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [ pkgs.bashInteractive ];
-          buildInputs = [
+        devShells.default = with nixpkgs; devshell.mkShell {
+          motd = "Merry coding 🎁🎄";
+          packages = [
+            clojure
             roc
-            pkgs.clojure
           ];
         };
       });

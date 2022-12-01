@@ -1,5 +1,15 @@
 # Advent of Code 🎁🎄
 
+## Day 01
+
+Run clojure code:
+
+```
+clojure -M 01.clj
+```
+
+## Day 02
+
 Run roc code:
 
 ```
