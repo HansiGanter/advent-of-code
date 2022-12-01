@@ -25,6 +25,7 @@
           nativeBuildInputs = [ pkgs.bashInteractive ];
           buildInputs = [
             roc
+            pkgs.clojure
           ];
         };
       });
