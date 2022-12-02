@@ -1,37 +1,35 @@
-use std::collections::HashMap;
-
-/*      1
-a   =   x   3
-b   >   x   0
-c   <   x   6
-        2
-a   <   y   6
-b   =   y   3
-c   >   y   0
-        3
-a   >   z   0
-b   <   z   6
-c   =   z   3
+/*      
+a   =   x   4   a   z   3
+b   >   x   1   b   x   1
+c   <   x   7   c   y   2
+        
+a   <   y   8   a   x   4
+b   =   y   5   b   y   5
+c   >   y   2   c   z   6
+        
+a   >   z   3   a   y   8
+b   <   z   9   b   z   9
+c   =   z   6   c   x   7
 
 */
 
 fn main() {
-    let part1 = HashMap::from([
-        ("A X", (4,)),
-        ("B X", (1,)),
-        ("C X", (7,)),
-        ("A Y", (8,)),
-        ("B Y", (5,)),
-        ("C Y", (2,)),
-        ("A Z", (3,)),
-        ("B Z", (9,)),
-        ("C Z", (6,)),
-    ]);
-
-    let p1: Vec<i32> = std::fs::read_to_string("inputs/02-tung")
+    let (part1, part2): (Vec<i32>, Vec<i32>) = std::fs::read_to_string("inputs/02-tung")
         .unwrap()
         .split("\n")
-        .map(|x| part1.get(x).unwrap().0.clone())
-        .collect();
-    println!("part1: {:?}", p1.iter().sum::<i32>());
+        .map(|x| match x{
+            "A X"=> (4, 3),
+            "B X"=> (1, 1),
+            "C X"=> (7, 2),
+            "A Y"=> (8, 4),
+            "B Y"=> (5, 5),
+            "C Y"=> (2, 6),
+            "A Z"=> (3, 8),
+            "B Z"=> (9, 9),
+            "C Z"=> (6, 7),
+            _ => (0, 0),
+        }).unzip();
+
+    println!("part1: {}", part1.iter().sum::<i32>());
+    println!("part2: {}", part2.iter().sum::<i32>());
 }
