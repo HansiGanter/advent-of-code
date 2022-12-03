@@ -5,16 +5,24 @@ app "target/roc/02-felix"
     provides [main] to pf
 
 main =
-    task =
-        data <- Task.await (File.readUtf8 (Path.fromStr "inputs/02-felix"))
-        rows = Str.split data "\n"
-        _ <- Task.await (Stdout.line (Num.toStr (part1 rows)))
-        Stdout.line (Num.toStr (part2 rows))
-    Task.attempt task \result ->
-        when result is
-            Ok _ -> Stdout.line "Seems like everything worked!"
-            Err _ -> Stdout.line "Oh something went wrong!"
+    result <- Task.attempt task
+    message = when result is
+        Ok _ -> "Seems like everything worked out :-)"
+        Err _ -> "Oh, something went wrong :-("
+    Stdout.line message
 
+task =
+    path = Path.fromStr "inputs/02-felix"
+    data <- File.readUtf8 path |> Task.await
+    rows = Str.split data "\n"
+    score1 = Num.toStr (part1 rows)
+    score2 = Num.toStr (part2 rows)
+    [
+        "Part 1: \(score1)",
+        "Part 2: \(score2)",
+    ]
+    |> Str.joinWith "\n" 
+    |> Stdout.line
 
 part1 = \rows ->
     yours = \shape ->
@@ -72,8 +80,8 @@ opponent = \shape ->
         "C" -> Scissors
         _ -> crash "Invalid shape '\(shape)'!"
 
-score = \a, b ->
-    when [ a, b ] is
+score = \oppenentChoice, yourChoice ->
+    when [ oppenentChoice, yourChoice ] is
         [ Rock, Rock ] -> 4
         [ Rock, Paper ] -> 8
         [ Rock, Scissors ] -> 3
