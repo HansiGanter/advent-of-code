@@ -1,6 +1,6 @@
 # Advent of Code 🎁🎄
 
-24 Days! 24 Languages!
+25 Days! 25 Languages!
 
 * C
 * Clojure
@@ -13,6 +13,7 @@
 * Idris
 * Julia
 * Kotlin
+* Lua
 * Nim
 * Nix
 * OCaml

@@ -36,7 +36,7 @@ part1 = \rows ->
         shapes = when Str.splitFirst row " " is
             Ok x -> x
             _ -> crash "Invalid number of shapes '\(row)'!"
-        opponentChoice = parseOponentChoice shapes.before
+        opponentChoice = parseOpponentChoice shapes.before
         yourChoice = parseYourChoice shapes.after
         score opponentChoice yourChoice
     |> List.sum
@@ -68,12 +68,12 @@ part2 = \rows ->
             Ok x -> x
             _ -> crash "Invalid number of shapes '\(row)'!"
         outcome = parseOutcome shapes.after
-        opponentChoice = parseOponentChoice shapes.before
+        opponentChoice = parseOpponentChoice shapes.before
         yourChoice = computeYourChoice opponentChoice outcome
         score opponentChoice yourChoice
     |> List.sum
 
-parseOponentChoice = \shape ->
+parseOpponentChoice = \shape ->
     when shape is
         "A" -> Rock
         "B" -> Paper
