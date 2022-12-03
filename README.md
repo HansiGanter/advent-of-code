@@ -1,5 +1,32 @@
 # Advent of Code 🎁🎄
 
+24 Days! 24 Languages!
+
+* C
+* Clojure
+* Elixir
+* Elm
+* Gleam
+* Go
+* Haskell
+* Hy
+* Idris
+* Julia
+* Kotlin
+* Nim
+* Nix
+* OCaml
+* Odin
+* Prolog
+* Python
+* ReasonML
+* Roc
+* Rust
+* Scala
+* TypeScript
+* V-lang
+* Zig
+
 ## Day 01
 
 Run clojure code:
