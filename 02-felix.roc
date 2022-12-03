@@ -25,7 +25,7 @@ task =
     |> Stdout.line
 
 part1 = \rows ->
-    yours = \shape ->
+    parseYourChoice = \shape ->
         when shape is
             "X" -> Rock
             "Y" -> Paper
@@ -36,9 +36,9 @@ part1 = \rows ->
         shapes = when Str.splitFirst row " " is
             Ok x -> x
             _ -> crash "Invalid number of shapes '\(row)'!"
-        oppenentChoice = opponent shapes.before
-        yourChoice = yours shapes.after
-        score oppenentChoice yourChoice
+        opponentChoice = parseOponentChoice shapes.before
+        yourChoice = parseYourChoice shapes.after
+        score opponentChoice yourChoice
     |> List.sum
 
 part2 = \rows ->
@@ -49,31 +49,31 @@ part2 = \rows ->
             "Z" -> Win
             _ -> crash "Invalid shape '\(shape)'!"
     computeYourChoice = \opponentChoice, outcome ->
-        when opponentChoice is
-            Rock -> when outcome is 
-                Lose -> Scissors
-                Draw -> Rock
-                Win -> Paper
-            Paper -> when outcome is 
-                Lose -> Rock
-                Draw -> Paper
-                Win -> Scissors
-            Scissors -> when outcome is 
-                Lose -> Paper
-                Draw -> Scissors
-                Win -> Rock
+        when outcome is
+            Lose -> when opponentChoice is
+                Rock -> Scissors
+                Paper -> Rock
+                Scissors -> Paper
+            Draw -> when opponentChoice is
+                Rock -> Rock
+                Paper -> Paper
+                Scissors -> Scissors
+            Win -> when opponentChoice is
+                Rock -> Paper
+                Paper -> Scissors
+                Scissors -> Rock
     rows
     |> List.map \row ->
         shapes = when Str.splitFirst row " " is
             Ok x -> x
             _ -> crash "Invalid number of shapes '\(row)'!"
         outcome = parseOutcome shapes.after
-        oppenentChoice = opponent shapes.before
-        yourChoice = computeYourChoice oppenentChoice outcome
-        score oppenentChoice yourChoice
+        opponentChoice = parseOponentChoice shapes.before
+        yourChoice = computeYourChoice opponentChoice outcome
+        score opponentChoice yourChoice
     |> List.sum
 
-opponent = \shape ->
+parseOponentChoice = \shape ->
     when shape is
         "A" -> Rock
         "B" -> Paper
