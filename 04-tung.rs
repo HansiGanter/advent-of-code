@@ -1,8 +1,8 @@
-use std::cmp;
+// use std::cmp;
 
 fn main() {
     let lines = std::fs::read_to_string("inputs/04-tung").unwrap();
-    let mut lines: Vec<Vec<Vec<i32>>> = lines
+    let lines: Vec<Vec<Vec<i32>>> = lines
         .split('\n')
         .map(|line| line.to_string())
         .map(|line| {
@@ -16,13 +16,16 @@ fn main() {
                 .collect()
         })
         .collect();
-    for line in &mut lines {
-        line.sort_by(|a, b| (a[1] - a[0]).cmp(&(b[1] - b[0])))
-    }
+    // for line in &mut lines {
+    //     line.sort_by(|a, b| (a[1] - a[0]).cmp(&(b[1] - b[0])))
+    // }
     let total = lines.len();
     let overlap = lines
         .iter()
-        .filter(|line| line[1][0] <= line[0][0] && line[1][1] >= line[0][1])
+        .filter(|line| {
+            (line[1][0] <= line[0][0] && line[1][1] >= line[0][1])
+                || (line[1][0] >= line[0][0] && line[1][1] <= line[0][1])
+        })
         .count();
 
     let not_overlap = lines
