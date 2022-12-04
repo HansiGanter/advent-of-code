@@ -21,16 +21,16 @@ task =
     numberOfFullyOverlappingSections =
         pairsOfRanges
             |> List.countIf \pair ->
-                when pair is
+                when pair is # tuple matching is not implemented yet :/
                     [[a, b], [c, d]] -> (a <= c && d <= b) || (c <= a && b <= d)
-                    _ -> crash "invalid pair"
+                    _ -> crash "invalid pair of ranges"
             |> Num.toStr
     numberOverlappingSections =
         pairsOfRanges
             |> List.countIf \pair ->
                 when pair is
                     [[a, b], [c, d]] ->  a <= d && c <= b
-                    _ -> crash "invalid pair"
+                    _ -> crash "invalid pair of ranges"
             |> Num.toStr
     Str.joinWith
     [
