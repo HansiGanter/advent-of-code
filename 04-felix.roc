@@ -1,4 +1,4 @@
-app "target/roc/02-felix"
+app "target/roc/04-felix"
     packages { pf: "basic-cli/src/main.roc" }
     imports [pf.Task, pf.Stdout, pf.File, pf.Path]
     provides [main] to pf
