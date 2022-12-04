@@ -35,6 +35,7 @@
           motd = "Merry coding 🎁🎄";
           packages = [
             clojure
+            luajit
             roc
           ];
         };
