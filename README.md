@@ -50,3 +50,21 @@ Some useful links:
 * [Roc Tutorial](https://www.roc-lang.org/tutorial)
 * [Roc Standard Library](https://www.roc-lang.org/builtins/str)
 * [Roc Basic CLI Platform](https://www.roc-lang.org/packages/basic-cli/Http)
+
+## Day 03
+
+Run Lua code:
+
+```
+lua 03.lua
+```
+
+## Day 04
+
+Run TypeScript code:
+
+```
+deno run --allow-read 04.ts
+```
+> *Info*
+> Install vscode deno extension to not get weird errors in vscode
