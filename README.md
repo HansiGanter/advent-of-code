@@ -66,5 +66,5 @@ Run TypeScript code:
 ```
 deno run --allow-read 04.ts
 ```
-> *Info*
+> *Note*
 > Install vscode deno extension to not get weird errors in vscode

@@ -1,6 +1,5 @@
 app "target/roc/02-felix"
     packages { pf: "basic-cli/src/main.roc" }
-    # packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.1.1/zAoiC9xtQPHywYk350_b7ust04BmWLW00sjb9ZPtSQk.tar.br" }
     imports [pf.Task, pf.Stdout, pf.File, pf.Path]
     provides [main] to pf
 
