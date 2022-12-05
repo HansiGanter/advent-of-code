@@ -68,3 +68,11 @@ deno run --allow-read 04.ts
 ```
 > **Note**
 > Install vscode deno extension to not get weird errors in vscode
+
+## Day 05
+
+Run Hy code:
+
+```
+hy 05.hy
+```

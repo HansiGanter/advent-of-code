@@ -36,6 +36,7 @@
           packages = [
             clojure
             deno
+            (hy.withPackages (ps: with ps; [ hyrule ]))
             luajit
             roc
           ];
