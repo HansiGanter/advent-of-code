@@ -7,11 +7,21 @@ fn main() {
 }
 
 fn detect(n: usize, chars: Vec<char>) -> usize {
-    for (i, item) in chars.windows(n).enumerate() {
-        let set: std::collections::HashSet<&char> = std::collections::HashSet::from_iter(item);
-        if set.len() == n {
-            return i + n;
-        }
-    }
-    panic!()
+    chars
+        .windows(n)
+        .enumerate()
+        .find(|(_, item)| {
+            std::collections::HashSet::<&char>::from_iter(item.into_iter()).len() == n
+        })
+        .unwrap_or_default()
+        .0
+        + n
+
+    // for (i, item) in chars.windows(n).enumerate() {
+    //     let set: std::collections::HashSet<&char> = std::collections::HashSet::from_iter(item);
+    //     if set.len() == n {
+    //         return i + n;
+    //     }
+    // }
+    // panic!()
 }
