@@ -77,3 +77,11 @@ Run Hy code:
 ```
 hy 05.hy
 ```
+
+## Day 06
+
+Run Haskell code:
+
+```
+runhaskell 06.hs
+```
