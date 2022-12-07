@@ -1,6 +1,6 @@
 # Advent of Code 🎁🎄
 
-25 Days! 25 Languages!
+25 Days! 26 Languages!
 
 * C
 * Clojure
@@ -19,13 +19,14 @@
 * OCaml
 * Odin
 * Prolog
+* PureScript
 * Python
-* ReasonML
+* ReasonML/ReScript
 * Roc
 * Rust
 * Scala
 * TypeScript
-* V-lang
+* V
 * Zig
 
 ## Day 01
