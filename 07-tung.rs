@@ -116,3 +116,46 @@ fn get_size(nodes: &HashMap<String, MyNode>, node: &MyNode) -> i32 {
     }
     return current;
 }
+
+// easier????¡
+// use std::collections::HashMap;
+// use std::fs::read_to_string;
+// fn main() {
+//     let mut sizes = HashMap::<Vec<String>, i32>::new();
+//     let content = read_to_string("07-tung").unwrap();
+//     let content = content
+//         .split('\n')
+//         .map(|x| x.split(' ').collect())
+//         .collect::<Vec<Vec<&str>>>();
+//     // println!("{content:?}");
+//     let mut path: Vec<String> = vec![];
+//     sizes.insert(vec!["/".to_string()], 0);
+//     for line in content.iter() {
+//         match &line[..] {
+//             ["$", "cd", "/"] => {
+//                 path = vec!["/".to_string()];
+//             }
+//             ["$", "cd", ".."] => {
+//                 path.pop();
+//             }
+//             ["$", "cd", dir] => path.push(dir.to_string()),
+//             ["$", "ls"] => {}
+//             ["dir", dir] => {
+//                 let mut new_path = path.clone();
+//                 new_path.push(dir.to_string());
+//                 sizes.insert(new_path, 0);
+//             }
+//             [size, _] => {
+//                 *sizes.get_mut(&path).unwrap() += size.parse::<i32>().unwrap();
+//             }
+//             _ => panic!(),
+//         }
+//     }
+//     let all = sizes.values().collect::<Vec<&i32>>();
+//     let p1 = all
+//         .clone()
+//         .into_iter()
+//         .filter(|x| x <= &&100000)
+//         .sum::<i32>();
+//     println!("{p1}")
+// }
