@@ -1,27 +1,22 @@
 app "target/roc/02-felix"
     packages { pf: "basic-cli/src/main.roc" }
-    # packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.1.1/zAoiC9xtQPHywYk350_b7ust04BmWLW00sjb9ZPtSQk.tar.br" }
     imports [pf.Task, pf.Stdout, pf.File, pf.Path]
     provides [main] to pf
 
 main =
-    result <- Task.attempt task
-    message = when result is
-        Ok _ -> "Seems like everything worked out :-)"
-        Err _ -> "Oh, something went wrong :-("
-    Stdout.line message
+    Task.onFail task \_ -> crash "rip"
 
 task =
-    path = Path.fromStr "inputs/02-felix"
-    data <- File.readUtf8 path |> Task.await
+    data <- File.readUtf8 (Path.fromStr "inputs/02-felix") |> Task.await
     rows = Str.split data "\n"
     score1 = Num.toStr (part1 rows)
     score2 = Num.toStr (part2 rows)
+
     [
         "Part 1: \(score1)",
         "Part 2: \(score2)",
     ]
-    |> Str.joinWith "\n" 
+    |> Str.joinWith "\n"
     |> Stdout.line
 
 part1 = \rows ->
@@ -31,6 +26,7 @@ part1 = \rows ->
             "Y" -> Paper
             "Z" -> Scissors
             _ -> crash "Invalid shape '\(shape)'!"
+
     rows
     |> List.map \row ->
         shapes = when Str.splitFirst row " " is
@@ -38,6 +34,7 @@ part1 = \rows ->
             _ -> crash "Invalid number of shapes '\(row)'!"
         opponentChoice = parseOpponentChoice shapes.before
         yourChoice = parseYourChoice shapes.after
+
         score opponentChoice yourChoice
     |> List.sum
 
@@ -50,18 +47,24 @@ part2 = \rows ->
             _ -> crash "Invalid shape '\(shape)'!"
     computeYourChoice = \opponentChoice, outcome ->
         when outcome is
-            Lose -> when opponentChoice is
-                Rock -> Scissors
-                Paper -> Rock
-                Scissors -> Paper
-            Draw -> when opponentChoice is
-                Rock -> Rock
-                Paper -> Paper
-                Scissors -> Scissors
-            Win -> when opponentChoice is
-                Rock -> Paper
-                Paper -> Scissors
-                Scissors -> Rock
+            Lose ->
+                when opponentChoice is
+                    Rock -> Scissors
+                    Paper -> Rock
+                    Scissors -> Paper
+
+            Draw ->
+                when opponentChoice is
+                    Rock -> Rock
+                    Paper -> Paper
+                    Scissors -> Scissors
+
+            Win ->
+                when opponentChoice is
+                    Rock -> Paper
+                    Paper -> Scissors
+                    Scissors -> Rock
+
     rows
     |> List.map \row ->
         shapes = when Str.splitFirst row " " is
@@ -70,6 +73,7 @@ part2 = \rows ->
         outcome = parseOutcome shapes.after
         opponentChoice = parseOpponentChoice shapes.before
         yourChoice = computeYourChoice opponentChoice outcome
+
         score opponentChoice yourChoice
     |> List.sum
 
@@ -81,14 +85,14 @@ parseOpponentChoice = \shape ->
         _ -> crash "Invalid shape '\(shape)'!"
 
 score = \oppenentChoice, yourChoice ->
-    when [ oppenentChoice, yourChoice ] is
-        [ Rock, Rock ] -> 4
-        [ Rock, Paper ] -> 8
-        [ Rock, Scissors ] -> 3
-        [ Paper, Rock ] -> 1
-        [ Paper, Paper ] -> 5
-        [ Paper, Scissors ] -> 9
-        [ Scissors, Rock ] -> 7
-        [ Scissors, Paper ] -> 2
-        [ Scissors, Scissors ] -> 6
+    when [oppenentChoice, yourChoice] is
+        [Rock, Rock] -> 4
+        [Rock, Paper] -> 8
+        [Rock, Scissors] -> 3
+        [Paper, Rock] -> 1
+        [Paper, Paper] -> 5
+        [Paper, Scissors] -> 9
+        [Scissors, Rock] -> 7
+        [Scissors, Paper] -> 2
+        [Scissors, Scissors] -> 6
         _ -> crash "pattern matching on tuples seems to be not implemented yet :D"

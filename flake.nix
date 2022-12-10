@@ -35,6 +35,10 @@
           motd = "Merry coding 🎁🎄";
           packages = [
             clojure
+            deno
+            ghc
+            (hy.withPackages (ps: with ps; [ hyrule ]))
+            luajit
             roc
           ];
         };

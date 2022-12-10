@@ -2,6 +2,7 @@
 result
 basic-cli
 target
+__pycache__
 
 # roc
 02
