@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { cursorTo } = require('readline');
 const fileContent = fs.readFileSync('inputs/07-hansi').toString()
 
 sumDir = []
