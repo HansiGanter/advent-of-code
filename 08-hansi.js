@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { getEnvironmentData } = require('worker_threads');
 const fileContent = fs.readFileSync('inputs/08-hansi').toString();
 const lines = fileContent.split('\n')
 
