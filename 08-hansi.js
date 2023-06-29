@@ -28,8 +28,9 @@ for (let i = 1; i < grid[0].length - 1; i++) {
                 break;
             }
         }
-        // check right
         if (visible) { visibleTrees++; continue; }
+
+        // check right
         visible = true
         for (let x = grid[0].length - 1; x > j; x--) {
             if (grid[i][x] >= grid[i][j]) {
@@ -37,9 +38,9 @@ for (let i = 1; i < grid[0].length - 1; i++) {
                 break;
             }
         }
+        if (visible) { visibleTrees++; continue; }
 
         // check top
-        if (visible) { visibleTrees++; continue; }
         visible = true
         for (let x = 0; x < i; x++) {
             if (grid[x][j] >= grid[i][j]) {
@@ -47,9 +48,9 @@ for (let i = 1; i < grid[0].length - 1; i++) {
                 break;
             }
         }
+        if (visible) { visibleTrees++; continue; }
 
         // check bottom
-        if (visible) { visibleTrees++; continue; }
         visible = true
         for (let x = grid[0].length - 1; x > i; x--) {
             if (grid[x][j] >= grid[i][j]) {
