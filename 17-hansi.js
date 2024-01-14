@@ -1,6 +1,5 @@
-const { dir } = require("console");
 const fs = require("fs");
-const file = fs.readFileSync("./inputs/17-example").toString();
+const file = fs.readFileSync("./inputs/17-hansi").toString();
 
 const rocks = [
   `####`,
@@ -26,19 +25,22 @@ class Rock {
   }
 }
 
-let field = [
-  [".", ".", ".", ".", ".", ".", "."],
-  [".", ".", ".", ".", ".", ".", "."],
-  [".", ".", ".", ".", ".", ".", "."],
-  [".", ".", ".", ".", ".", ".", "."],
-  [".", ".", ".", ".", ".", ".", "."],
-];
+let field = [[], [], [], [], []];
 let totalHeight = 3;
 let shape = 0;
 let rock = new Rock(2, totalHeight, shape % 5);
 let createNewRock = false;
 let numberOfRocks = 0;
 let directionIndex = -1;
+let memory = [
+  {
+    snap: "",
+    height: 0,
+    numRocks: 0,
+  },
+];
+let FINALROCKGOAL = 1000000000000;
+let ADDITIONALHEIGHT = 0;
 
 while (true) {
   directionIndex++;
@@ -66,17 +68,10 @@ while (true) {
         break;
     }
 
-    // let x = "";
-    // field.forEach((f) => {
-    //   f.forEach((a) => (x += a));
-    //   x += "\n";
-    // });
-
     //2021
     // 1000000000000
-    if (numberOfRocks === 2021) {
-      // console.log(x);
-      console.log(totalHeight);
+    if (numberOfRocks === FINALROCKGOAL) {
+      console.log(totalHeight + ADDITIONALHEIGHT - 3);
       break;
     }
 
@@ -84,52 +79,33 @@ while (true) {
     switch (rock.shape) {
       case 0:
         //HLINE
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
         totalHeight = rock.y + 4 > totalHeight ? rock.y + 4 : totalHeight;
         break;
       case 1:
         //PLUS
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
         totalHeight = rock.y + 6 > totalHeight ? rock.y + 6 : totalHeight;
         break;
       case 2:
         //REVERSEL
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
         totalHeight = rock.y + 6 > totalHeight ? rock.y + 6 : totalHeight;
         break;
       case 3:
         //SQUARE
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
         totalHeight = rock.y + 7 > totalHeight ? rock.y + 7 : totalHeight;
         break;
       case 4:
         //SQUARE
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
-        field.push([".", ".", ".", ".", ".", ".", "."]);
         totalHeight = rock.y + 5 > totalHeight ? rock.y + 5 : totalHeight;
         break;
       default:
         break;
     }
 
-    if (numberOfRocks % 10 === 0) {
-      let diff = field.length - (totalHeight + 5);
-      for (let i = 0; i < diff; i++) {
-        field.pop();
-      }
+    const addRows = totalHeight + 5 - field.length;
+    for (let i = 0; i < addRows; i++) {
+      field.push([]);
     }
+
     rock = new Rock(2, totalHeight, shape % 5);
     numberOfRocks++;
   }
@@ -158,6 +134,10 @@ while (true) {
 
     default:
       break;
+  }
+
+  if (directionIndex % (file.length * rocks.length) === 0) {
+    detectLoop();
   }
 }
 
@@ -289,50 +269,74 @@ function vline(rock, direction) {
 }
 
 function drawHLine(x, y) {
-  field[y][x] = "#";
-  field[y][x + 1] = "#";
-  field[y][x + 2] = "#";
-  field[y][x + 3] = "#";
+  field[y][x] = 1;
+  field[y][x + 1] = 1;
+  field[y][x + 2] = 1;
+  field[y][x + 3] = 1;
 }
 function drawVLine(x, y) {
-  field[y][x] = "#";
-  field[y + 1][x] = "#";
-  field[y + 2][x] = "#";
-  field[y + 3][x] = "#";
+  field[y][x] = 1;
+  field[y + 1][x] = 1;
+  field[y + 2][x] = 1;
+  field[y + 3][x] = 1;
 }
 function drawSquare(x, y) {
-  field[y][x] = "#";
-  field[y][x + 1] = "#";
-  field[y + 1][x] = "#";
-  field[y + 1][x + 1] = "#";
+  field[y][x] = 1;
+  field[y][x + 1] = 1;
+  field[y + 1][x] = 1;
+  field[y + 1][x + 1] = 1;
 }
 function drawPlus(x, y) {
-  field[y][x + 1] = "#";
-  field[y + 1][x] = "#";
-  field[y + 1][x + 1] = "#";
-  field[y + 1][x + 2] = "#";
-  field[y + 2][x + 1] = "#";
+  field[y][x + 1] = 1;
+  field[y + 1][x] = 1;
+  field[y + 1][x + 1] = 1;
+  field[y + 1][x + 2] = 1;
+  field[y + 2][x + 1] = 1;
 }
 function drawReverseL(x, y) {
-  field[y][x] = "#";
-  field[y][x + 1] = "#";
-  field[y][x + 2] = "#";
-  field[y + 1][x + 2] = "#";
-  field[y + 2][x + 2] = "#";
+  field[y][x] = 1;
+  field[y][x + 1] = 1;
+  field[y][x + 2] = 1;
+  field[y + 1][x + 2] = 1;
+  field[y + 2][x + 2] = 1;
 }
 
 function checkLeft(x, y) {
   if (x <= 0) return false;
-  else if (field[y][x - 1] === "#") return false;
+  else if (field[y][x - 1] === 1) return false;
   return true;
 }
 function checkRight(x, y) {
   if (x >= 6) return false;
-  else if (field[y][x + 1] === "#") return false;
+  else if (field[y][x + 1] === 1) return false;
   return true;
 }
 function checkDown(x, y) {
   if (y <= 0) return false;
-  else if (field[y - 1][x] === "#") return false;
+  else if (field[y - 1][x] === 1) return false;
   return true;
+}
+
+function detectLoop() {
+  let snapshot = JSON.stringify(
+    field.slice(memory[memory.length - 1].height, field.length - 1)
+  );
+  memory.push({
+    snap: snapshot,
+    height: totalHeight,
+    numRocks: numberOfRocks,
+  });
+  if (memory[memory.length - 1].snap === memory[memory.length - 2].snap) {
+    let heigthIncrease =
+      memory[memory.length - 1].height - memory[memory.length - 2].height;
+    let rockIncrease =
+      memory[memory.length - 1].numRocks - memory[memory.length - 2].numRocks;
+
+    let roundsToIncrease = Math.floor(
+      (1000000000000 - numberOfRocks) / rockIncrease
+    );
+
+    FINALROCKGOAL -= roundsToIncrease * rockIncrease;
+    ADDITIONALHEIGHT = roundsToIncrease * heigthIncrease;
+  }
 }
